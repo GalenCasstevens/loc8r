@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Loc = mongoose.model('Location');
 
 const doSetAverageRating = (location) => {
-    if (location.reviews && location.reviews > 0) {
+    if (location.reviews && location.reviews.length > 0) {
         const count = location.reviews.length;
         const total = location.reviews.reduce((acc, { rating }) => {
             return acc + rating;
@@ -30,7 +30,7 @@ const updateAverageRating = (locationid) => {
         });
 };
 
-const doAddReview = (req, res, location) => {
+const doAddReview =  (req, res, location) => {
     if (!location) {
         res
             .status(404)
@@ -39,23 +39,19 @@ const doAddReview = (req, res, location) => {
             });
     } else {
         const { author, rating, reviewText } = req.body;
-
         location.reviews.push({
             author,
             rating,
             reviewText
         });
-
-        locations.save((err, location) => {
+        location.save((err, location) => {
             if (err) {
                 res
                     .status(400)
                     .json(err);
             } else {
                 updateAverageRating(location._id);
-
                 const thisReview = location.reviews.slice(-1).pop();
-
                 res
                     .status(201)
                     .json(thisReview);
@@ -68,6 +64,7 @@ const reviewsCreate = (req, res) => {
     const locationId = req.params.locationid;
 
     if (locationId) {
+        console.log(`locationid: ${locationId}`);
         Loc
             .findById(locationId)
             .select('reviews')
@@ -77,9 +74,10 @@ const reviewsCreate = (req, res) => {
                         .status(400)
                         .json(err);
                 } else {
-                    doAddReview(req, res, locarion);
+                    console.log(`location from reviewsCreate: ${location}`);
+                    doAddReview(req, res, location);
                 }
-            })
+            });
     }
 };
 

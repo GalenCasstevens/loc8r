@@ -77,12 +77,15 @@ const homelist = (req, res) => {
     };
     request(
         requestOptions,
-        (err, response, body) => {
+        (err, { statusCode }, body) => {
             let data = [];
-            data = body.map((item) => {
-                item.distance = formatDistance(item.distance);
-                return item;
-            })
+            console.log(`Body: ${body}`);
+            if(statusCode === 200 && body.length) {
+                data = body.map((item) => {
+                    item.distance = formatDistance(item.distance);
+                    return item;
+                });
+            }
             renderHomepage(req, res, data);
         }
     );
@@ -164,7 +167,7 @@ const doAddReview = (req, res) => {
         json: postData
     };
     if (!postData.author || !postData.rating || !postData.reviewText) {
-        res.redirect(`/location/${locationid}/review/new?err=val`);  
+        res.redirect(`/location/${locationid}/review/new?err=val`);
     } else {
         request(
             requestOptions,

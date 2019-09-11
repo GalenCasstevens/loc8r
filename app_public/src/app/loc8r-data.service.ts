@@ -9,7 +9,7 @@ export class Loc8rDataService {
 
   constructor(private http: HttpClient) { }
 
-  private apiBaseUrl = 'http://localhost:3000/api';
+  private apiBaseUrl = 'https://powerful-savannah-51659.herokuapp.com/api';
 
   public getLocations(): Promise<Location[]> {
     const lng: number = -80.747932;

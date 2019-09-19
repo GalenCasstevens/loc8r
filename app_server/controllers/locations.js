@@ -3,7 +3,7 @@ const apiOptions = {
     server: 'http://localhost:3000'
 };
 if (process.env.NODE_ENV === 'production') {
-    apiOptions.server = 'https://powerful-savannah-51659.herokuapp.com'
+    apiOptions.server = 'https://galen-loc8r.herokuapp.com'
 }
 
 const formatDistance = (distance) => {

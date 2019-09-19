@@ -1,4 +1,4 @@
 export const environment = {
-  apiBaseUrl: 'https://powerful-savannah-51659.herokuapp.com/api',
+  apiBaseUrl: 'https://galen-loc8r.herokuapp.com/api',
   production: true
 };

@@ -21,23 +21,26 @@ export class HomeListComponent implements OnInit {
   public message: string;
 
   ngOnInit() {
-    this.getPosition();
+    // this.getPosition();
+    this.getLocations();
   }
 
-  private getPosition(): void {
-    this.message = 'Getting your location...';
-    this.geolocationService
-      .getPosition(
-        this.getLocations.bind(this),
-        this.showError.bind(this),
-        this.noGeo.bind(this)
-      );
-  }
+  // private getPosition(): void {
+  //   this.message = 'Getting your location...';
+  //   this.geolocationService
+  //     .getPosition(
+  //       this.getLocations.bind(this),
+  //       this.showError.bind(this),
+  //       this.noGeo.bind(this)
+  //     );
+  // }
   
-  private getLocations(position: any): void {
+  private getLocations(
+    // position: any
+    ): void {
     this.message = 'Searching for nearby places';
-    const lat: number = position.coords.latitude;
-    const lng: number = position.coords.longitude;
+    const lat: number = 35.161870;
+    const lng: number = -80.748506;
     this.loc8rDataService
       .getLocations(lat, lng)
         .then(foundLocations => {

@@ -6,7 +6,6 @@ const logger = require('morgan');
 const favicon = require('serve-favicon');
 require('./app_api/models/db');
 
-const indexRouter = require('./app_server/routes/index');
 const apiRouter = require('./app_api/routes/index');
 
 const usersRouter = require('./app_server/routes/users');
@@ -22,7 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'app_public')));
+app.use(express.static(path.join(__dirname, 'app_public', 'build')));
 
 app.use('/api', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
@@ -30,8 +29,10 @@ app.use('/api', (req, res, next) => {
   next();
 });
 
-app.use('/', indexRouter);
 app.use('/api', apiRouter);
+app.get(/(\/about)|(\/location\/[a-z0-9]{24})/, function(req, res) {
+  res.sendFile(path.join(__dirname, 'app_public', 'build', 'index.html'));
+});
 
 app.use('/users', usersRouter);
 

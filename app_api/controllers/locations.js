@@ -4,6 +4,7 @@ const Loc = mongoose.model('Location');
 const locationsListByDistance = async (req, res) => {
     const lng = parseFloat(req.query.lng);
     const lat = parseFloat(req.query.lat);
+    const maxDistance = parseFloat(req.query.maxDistance);
     const near = {
         type: "Point",
         coordinates: [lng, lat]
@@ -12,7 +13,7 @@ const locationsListByDistance = async (req, res) => {
         distanceField: "distance.calculated",
         key: 'coords',
         spherical: true,
-        maxDistance: 20000
+        maxDistance: maxDistance
     };
     if ((!lng && lng !== 0) || (!lat && lat !== 0)) {
         return res
@@ -27,7 +28,7 @@ const locationsListByDistance = async (req, res) => {
                     near,
                     ...geoOptions
                 }
-            }, { $limit: 10 }
+            }, { $limit: 5 }
         ]);
         const locations = results.map(result => {
             return {
